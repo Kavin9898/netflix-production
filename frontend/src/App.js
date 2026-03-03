@@ -1,19 +1,30 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Movies from "./pages/Movies";
-import Profile from "./pages/Profile";
-import Navbar from "./components/Navbar";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+function Home() {
+  return <h2>Welcome to StreamFlix 🎬</h2>;
+}
+
+function Movies() {
+  return <h2>Movies Page 🍿</h2>;
+}
+
+function Login() {
+  return <h2>Login Page 🔐</h2>;
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <nav style={{ marginBottom: "20px" }}>
+        <Link to="/">Home</Link> |{" "}
+        <Link to="/movies">Movies</Link> |{" "}
+        <Link to="/login">Login</Link>
+      </nav>
+
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/movies" element={<Movies />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
