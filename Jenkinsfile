@@ -62,19 +62,19 @@ pipeline {
     }
 }
 
-        stage('Build & Push Frontend') {
-            steps {
-                sh """
-                docker build -t $ECR_REPO_PREFIX-frontend:$IMAGE_TAG frontend
-                docker tag $ECR_REPO_PREFIX-frontend:$IMAGE_TAG \
-                $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_PREFIX-frontend:$IMAGE_TAG
+       stage('Build & Push Frontend') {
+    steps {
+        sh """
+        docker build -t ${ECR_REPO_PREFIX}-frontend:${IMAGE_TAG} frontend
 
-                docker push \
-                $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_PREFIX-frontend:$IMAGE_TAG
-                """
-            }
-        }
+        docker tag ${ECR_REPO_PREFIX}-frontend:${IMAGE_TAG} \
+        ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_PREFIX}-frontend:${IMAGE_TAG}
 
+        docker push \
+        ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_PREFIX}-frontend:${IMAGE_TAG}
+        """
+    }
+}
         stage('Terraform Init') {
             steps {
                 dir('infrastructure') {
