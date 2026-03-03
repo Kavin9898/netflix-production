@@ -1,15 +1,22 @@
-{
-  "name": "streamflix-frontend",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^1.6.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
-  }
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Movies from "./pages/Movies";
+import Profile from "./pages/Profile";
+import Navbar from "./components/Navbar";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
+export default App;
