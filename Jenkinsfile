@@ -13,7 +13,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/YOUR_USERNAME/netflix-production-project.git'
+                    url: 'https://github.com/Kavin9898/netflix-production.git'
             }
         }
 
