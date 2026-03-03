@@ -1,32 +1,22 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const login = async () => {
-    const res = await axios.post("http://localhost:5000/api/auth/login", {
-      email,
-      password
-    });
-
-    localStorage.setItem("token", res.data.token);
-    window.location.href = "/movies";
+  const handleLogin = () => {
+    alert(`Logging in with ${email}`);
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2>Login</h2>
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <br /><br />
+    <div>
+      <h2>Login 🔐</h2>
       <input
-        placeholder="Password"
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
+        type="email"
+        placeholder="Enter email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
-      <br /><br />
-      <button onClick={login}>Login</button>
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }
