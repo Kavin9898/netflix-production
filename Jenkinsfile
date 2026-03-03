@@ -37,28 +37,30 @@ pipeline {
 }
 
         stage('Build & Push Services') {
-            steps {
-                script {
-                    def services = [
-                        "auth-service",
-                        "movie-service",
-                        "recommendation-service",
-                        "notification-service"
-                    ]
+    steps {
+        script {
+            def services = [
+                "auth-service",
+                "movie-service",
+                "recommendation-service",
+                "notification-service"
+            ]
 
-                    for (service in services) {
-                        sh """
-                        docker build -t $ECR_REPO_PREFIX-$service:$IMAGE_TAG services/$service
-                        docker tag $ECR_REPO_PREFIX-$service:$IMAGE_TAG \
-                        $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_PREFIX-$service:$IMAGE_TAG
+            for (service in services) {
 
-                        docker push \
-                        $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_PREFIX-$service:$IMAGE_TAG
-                        """
-                    }
-                }
+                sh """
+                docker build -t ${ECR_REPO_PREFIX}-${service}:${IMAGE_TAG} services/${service}
+
+                docker tag ${ECR_REPO_PREFIX}-${service}:${IMAGE_TAG} \
+                ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_PREFIX}-${service}:${IMAGE_TAG}
+
+                docker push \
+                ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_PREFIX}-${service}:${IMAGE_TAG}
+                """
             }
         }
+    }
+}
 
         stage('Build & Push Frontend') {
             steps {
