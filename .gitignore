@@ -1,0 +1,4 @@
+**/.env
+*.tfvars
+*.pem
+node_modules/
