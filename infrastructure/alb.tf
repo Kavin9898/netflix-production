@@ -1,19 +1,19 @@
-resource "aws_lb_target_group" "app_tg" {
-  name     = "app-target-group"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+resource "aws_autoscaling_group" "app_asg" {
+  desired_capacity    = 2
+  max_size            = 3
+  min_size            = 1
 
-  health_check {
-    path                = "/"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200"
-  }
+  vpc_zone_identifier = [
+    aws_subnet.public_subnet_1.id,
+    aws_subnet.public_subnet_2.id
+  ]
 
-  tags = {
-    Name = "app-target-group"
+  target_group_arns = [
+    aws_lb_target_group.app_tg.arn
+  ]
+
+  launch_template {
+    id      = aws_launch_template.app_lt.id
+    version = "$Latest"
   }
 }
