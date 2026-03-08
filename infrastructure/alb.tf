@@ -1,19 +1,51 @@
-resource "aws_autoscaling_group" "app_asg" {
-  desired_capacity    = 2
-  max_size            = 3
-  min_size            = 1
+# Application Load Balancer
+resource "aws_lb" "app_alb" {
+  name               = "app-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.web_sg.id]
 
-  vpc_zone_identifier = [
+  subnets = [
     aws_subnet.public_subnet_1.id,
     aws_subnet.public_subnet_2.id
   ]
 
-  target_group_arns = [
-    aws_lb_target_group.app_tg.arn
-  ]
+  tags = {
+    Name = "app-alb"
+  }
+}
 
-  launch_template {
-    id      = aws_launch_template.app_lt.id
-    version = "$Latest"
+
+# Target Group
+resource "aws_lb_target_group" "app_tg" {
+  name     = "app-target-group"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+
+  health_check {
+    path                = "/"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200"
+  }
+
+  tags = {
+    Name = "app-target-group"
+  }
+}
+
+
+# Listener
+resource "aws_lb_listener" "http_listener" {
+  load_balancer_arn = aws_lb.app_alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app_tg.arn
   }
 }
